@@ -29,6 +29,7 @@ db = client.socialMining_01
 @app.route('/')
 def home():
     time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # read data from mongodb
     scraped = db.scraped.find()
     b = [todo for todo in scraped]   
     return render_template('app.html', products = b, **locals())
@@ -38,6 +39,7 @@ def home():
 def delete():	
     ids = request.json['ids']
     ids = ids.split(',')
+    # delete data
     [db.scraped.remove({'_id': id1}) for id1 in ids]
 
 # To add data entry, CREATE     
@@ -64,6 +66,7 @@ def add():
     dict1['timeScraped'] = ''.join(request.json['timeScraped'])
     dict1['_id'] = dict1['Name']
     
+    # add 1 entry
     db.scraped.insert_one(dict1)
     
 # run the flask app   
